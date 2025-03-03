@@ -65,8 +65,7 @@ import { ref } from "vue";
 
 const menuItems = ref([
   { name: "Dashboard", path: "/dashboard" },
-  { name: "Orders", path: "/orders" },
-  { name: "Voucher Management", path: "/vouchers" },
+  { name: "Products", path: "/products" },
 ]);
 
 const isOpen = ref(false);
