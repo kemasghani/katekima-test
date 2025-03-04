@@ -23,11 +23,6 @@
               Nama
               <span class="ml-1">{{ sortOrder === "asc" ? "▲" : "▼" }}</span>
             </th>
-            <th class="px-4 py-3 text-left">Kategori</th>
-            <th class="px-4 py-3 text-left">Harga</th>
-            <th class="px-4 py-3 text-center">Gambar</th>
-            <th class="px-4 py-3 text-center">Rating</th>
-            <th class="px-4 py-3 text-center">Review</th>
             <th class="px-4 py-3 text-center">Aksi</th>
           </tr>
         </thead>
@@ -40,23 +35,6 @@
             </td>
             <td class="px-4 py-3">
               <div class="h-5 w-48 bg-gray-300 animate-pulse rounded"></div>
-            </td>
-            <td class="px-4 py-3">
-              <div class="h-5 w-24 bg-gray-300 animate-pulse rounded"></div>
-            </td>
-            <td class="px-4 py-3">
-              <div class="h-5 w-36 bg-gray-300 animate-pulse rounded"></div>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <div
-                class="h-12 w-12 bg-gray-300 animate-pulse rounded-full mx-auto"
-              ></div>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <div class="h-5 w-16 bg-gray-300 animate-pulse rounded"></div>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <div class="h-5 w-12 bg-gray-300 animate-pulse rounded"></div>
             </td>
             <td class="px-4 py-3 text-center">
               <div
@@ -81,17 +59,7 @@
             <td class="px-4 py-3 w-[27%]">
               <p class="line-clamp-2">{{ product.title }}</p>
             </td>
-            <td class="px-4 py-3">{{ product.category }}</td>
-            <td class="px-4 py-3">${{ product.price }}</td>
-            <td class="px-4 py-3 text-center">
-              <img
-                :src="product.image"
-                alt="Product Image"
-                class="h-12 w-12 mx-auto rounded-md"
-              />
-            </td>
-            <td class="px-4 py-3 text-center">{{ product.rating.rate }} ⭐</td>
-            <td class="px-4 py-3 text-center">{{ product.rating.count }}</td>
+           
             <td class="px-4 py-3 text-center">
               <button
                 @click="$emit('edit', product.id)"
