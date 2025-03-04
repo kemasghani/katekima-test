@@ -73,6 +73,7 @@
             v-for="(product, index) in sortedProducts"
             :key="product.id"
             class="border-b hover:bg-gray-100 cursor-pointer"
+            @click="goToProductDetail(product.id)"
           >
             <td class="px-4 py-3">
               {{ (currentPage - 1) * perPage + index + 1 }}
@@ -146,7 +147,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { fetchProducts } from "@/services/productService";
 import { usePagination } from "@/composables/usePagination";
 
@@ -168,6 +170,14 @@ const products = ref<Product[]>([]);
 const loading = ref(true);
 const searchQuery = ref(localStorage.getItem("searchQuery") || "");
 const sortOrder = ref<"asc" | "desc">("asc");
+
+// Initialize router
+const router = useRouter();
+
+// Function to navigate to product detail page
+const goToProductDetail = (id: number) => {
+  router.push({ name: "ProductDetail", params: { id } });
+};
 
 // Filter products based on searchQuery
 const filteredProducts = computed(() => {
