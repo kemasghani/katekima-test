@@ -100,7 +100,7 @@
                 Edit
               </button>
               <button
-                @click="$emit('delete', product.id)"
+                @click="confirmDelete(product.id)"
                 class="px-3 py-1 ml-2 text-sm font-semibold text-white bg-red-500 rounded hover:bg-red-600"
               >
                 Hapus
@@ -149,7 +149,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { fetchProducts } from "@/services/productService";
+import Swal from "sweetalert2";
+import { fetchProducts, deleteProduct } from "@/services/productService";
 import { usePagination } from "@/composables/usePagination";
 
 interface Product {
@@ -231,6 +232,29 @@ const sortedProducts = computed(() => {
       : valueB.localeCompare(valueA);
   });
 });
+
+const confirmDelete = (id: number) => {
+  Swal.fire({
+    title: "Hapus Produk?",
+    text: "Produk ini akan dihapus secara permanen!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Batal",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(id);
+        products.value = products.value.filter((product) => product.id !== id);
+        Swal.fire("Dihapus!", "Produk telah dihapus.", "success");
+      } catch (error) {
+        Swal.fire("Error!", "Gagal menghapus produk.", "error");
+      }
+    }
+  });
+};
 
 // Fetch data initially
 onMounted(fetchData);

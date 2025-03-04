@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "@/views/Dashboard.vue";
 import Products from "@/views/Products.vue";
 import ProductAdd from "@/views/ProductAdd.vue";
 import ProductDetail from "@/views/ProductDetail.vue";
+import ProductEdit from "@/views/ProductEdit.vue";
 
 const routes = [
-  { path: "/", redirect: "/dashboard" },
-  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  { path: "/", redirect: "/products" },
   { path: "/products", name: "Products", component: Products },
   { path: "/product-add", name: "ProductAdd", component: ProductAdd },
   {
@@ -14,7 +13,13 @@ const routes = [
     name: "ProductDetail",
     component: ProductDetail,
     props: true,
-  }, // Added route
+  },
+  {
+    path: "/product-edit/:id",
+    name: "ProductEdit",
+    component: ProductEdit,
+    props: true,
+  },
 ];
 
 const router = createRouter({

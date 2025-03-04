@@ -24,7 +24,7 @@
     <!-- Sidebar menu -->
     <aside
       :class="[
-        'fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white transition-transform transform top-0 h-[100%]',
+        'fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white transition-transform transform top-0 h-full',
         isOpen ? 'translate-x-0' : '-translate-x-full',
         'md:static md:translate-x-0',
       ]"
@@ -38,20 +38,20 @@
       </div>
       <nav class="mt-5">
         <ul>
-          <li v-for="item in menuItems" :key="item.name">
+          <li>
             <router-link
-              :to="item.path"
+              to="/products"
               class="block py-3 px-5 text-gray-300 hover:bg-gray-700 transition-all"
-              active-class="bg-gray-700"
+              :class="{ 'bg-gray-700': isProductsActive }"
             >
-              {{ item.name }}
+              Products
             </router-link>
           </li>
         </ul>
       </nav>
     </aside>
 
-    <!-- TOggle button -->
+    <!-- Overlay for mobile -->
     <div
       v-if="isOpen"
       class="fixed inset-0 bg-black opacity-50 z-40 md:hidden"
@@ -61,15 +61,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-const menuItems = ref([
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "Products", path: "/products" },
-]);
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
 
 const isOpen = ref(false);
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value;
 };
+
+const route = useRoute();
+
+// Keep "Products" active for all related routes
+const isProductsActive = computed(() => {
+  return ["/products", "/product-add", "/product-edit", "/product"].some(
+    (path) => route.path.startsWith(path)
+  );
+});
 </script>

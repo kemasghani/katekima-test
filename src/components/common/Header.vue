@@ -23,13 +23,13 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 
 const pageTitle = computed(() => {
-  if (!route || !route.path) return "My Order App";
+  if (!route || !route.path) return "Header";
   const titles = {
     "/": "Dashboard",
     "/orders": "Orders",
     "/vouchers": "Voucher Management",
   };
-  return titles[route.path] || "My Order App"; // Default title if path not found
+  return titles[route.path] || "Header"; // Default title if path not found
 });
 
 const logout = () => {
