@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Daftar Produk</h1>
-    <button @click="$router.push('/add-product')">Tambah Produk</button>
+    <button @click="$router.push('/product-add')">Tambah Produk</button>
     <DataTable
       :products="products"
       :loading="loading"
@@ -15,15 +15,13 @@
 import { ref, onMounted } from "vue";
 import DataTable from "@/components/common/DataTable.vue";
 import { fetchProducts, deleteProduct } from "@/services/productService";
-import { usePagination } from "@/composables/usePagination";
 
-const { currentPage, perPage } = usePagination();
 const products = ref([]);
 const loading = ref(true);
 
 const fetchData = async () => {
   loading.value = true;
-  products.value = await fetchProducts(currentPage.value, perPage.value);
+  products.value = await fetchProducts();
   loading.value = false;
 };
 

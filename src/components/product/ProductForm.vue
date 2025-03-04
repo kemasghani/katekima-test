@@ -1,27 +1,68 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="product-form">
-    <div>
-      <label>Nama Produk</label>
-      <input v-model="formData.title" type="text" required />
-    </div>
-    <div>
-      <label>Harga</label>
-      <input v-model.number="formData.price" type="number" required />
-    </div>
-    <div>
-      <label>Deskripsi</label>
-      <textarea v-model="formData.description" required></textarea>
-    </div>
-    <div>
-      <label>Kategori</label>
-      <input v-model="formData.category" type="text" required />
-    </div>
-    <div>
-      <label>Gambar URL</label>
-      <input v-model="formData.image" type="text" required />
+  <form
+    @submit.prevent="handleSubmit"
+    class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
+  >
+    <h2 class="text-xl font-semibold text-gray-800">
+      {{ isEdit ? "Update Produk" : "Tambah Produk" }}
+    </h2>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
+      <input
+        v-model="formData.title"
+        type="text"
+        required
+        class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      />
     </div>
 
-    <button type="submit">
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Harga</label>
+      <input
+        v-model.number="formData.price"
+        type="number"
+        required
+        class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
+      <textarea
+        v-model="formData.description"
+        required
+        class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      ></textarea>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Kategori</label>
+      <input
+        v-model="formData.category"
+        type="text"
+        required
+        class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Gambar</label>
+      <input
+        type="file"
+        @change="handleFileUpload"
+        accept="image/*"
+        class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+      />
+      <p v-if="formData.image" class="text-sm text-gray-600">
+        File terpilih: {{ formData.image }}
+      </p>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+    >
       {{ isEdit ? "Update Produk" : "Tambah Produk" }}
     </button>
   </form>
@@ -50,7 +91,6 @@ const props = defineProps({
 const emit = defineEmits(["submit"]);
 const formData = ref({ ...props.product });
 
-// Watch for changes in props.product to update formData
 watch(
   () => props.product,
   (newProduct) => {
@@ -59,15 +99,14 @@ watch(
   { deep: true }
 );
 
+const handleFileUpload = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    formData.value.image = file.name; // Store only the file name
+  }
+};
+
 const handleSubmit = () => {
   emit("submit", formData.value);
 };
 </script>
-
-<style scoped>
-.product-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-</style>

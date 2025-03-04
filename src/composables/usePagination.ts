@@ -1,4 +1,4 @@
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
 
 export function usePagination(filteredProducts: Ref<any[]>) {
@@ -29,12 +29,6 @@ export function usePagination(filteredProducts: Ref<any[]>) {
       localStorage.setItem("currentPage", currentPage.value.toString());
     }
   };
-
-  // Reset to first page when filteredProducts change (new search)
-  watch(filteredProducts, () => {
-    currentPage.value = 1;
-  });
-
   return {
     currentPage,
     perPage,

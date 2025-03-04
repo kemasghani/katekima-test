@@ -23,23 +23,74 @@
               Nama
               <span class="ml-1">{{ sortOrder === "asc" ? "▲" : "▼" }}</span>
             </th>
+            <th class="px-4 py-3 text-left">Kategori</th>
+            <th class="px-4 py-3 text-left">Harga</th>
+            <th class="px-4 py-3 text-center">Gambar</th>
+            <th class="px-4 py-3 text-center">Rating</th>
+            <th class="px-4 py-3 text-center">Review</th>
             <th class="px-4 py-3 text-center">Aksi</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr v-if="loading">
-            <td colspan="3" class="px-4 py-3 text-center">Loading...</td>
+          <!-- Skeleton Loader -->
+          <tr v-if="loading" v-for="i in 10" :key="i" class="border-b">
+            <td class="px-4 py-3">
+              <div class="h-5 w-6 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3">
+              <div class="h-5 w-48 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3">
+              <div class="h-5 w-24 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3">
+              <div class="h-5 w-36 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div
+                class="h-12 w-12 bg-gray-300 animate-pulse rounded-full mx-auto"
+              ></div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="h-5 w-16 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="h-5 w-12 bg-gray-300 animate-pulse rounded"></div>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div
+                class="h-5 w-20 bg-gray-300 animate-pulse rounded inline-block"
+              ></div>
+              <div
+                class="h-5 w-20 bg-gray-300 animate-pulse rounded inline-block ml-2"
+              ></div>
+            </td>
           </tr>
+          <!-- Render Products -->
           <tr
             v-else
             v-for="(product, index) in sortedProducts"
             :key="product.id"
-            class="border-b hover:bg-gray-100"
+            class="border-b hover:bg-gray-100 cursor-pointer"
           >
             <td class="px-4 py-3">
               {{ (currentPage - 1) * perPage + index + 1 }}
             </td>
-            <td class="px-4 py-3">{{ product.title }}</td>
+            <td class="px-4 py-3 w-[27%]">
+              <p class="line-clamp-2">{{ product.title }}</p>
+            </td>
+            <td class="px-4 py-3">{{ product.category }}</td>
+            <td class="px-4 py-3">${{ product.price }}</td>
+            <td class="px-4 py-3 text-center">
+              <img
+                :src="product.image"
+                alt="Product Image"
+                class="h-12 w-12 mx-auto rounded-md"
+              />
+            </td>
+            <td class="px-4 py-3 text-center">{{ product.rating.rate }} ⭐</td>
+            <td class="px-4 py-3 text-center">{{ product.rating.count }}</td>
             <td class="px-4 py-3 text-center">
               <button
                 @click="$emit('edit', product.id)"
@@ -95,12 +146,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { fetchProducts } from "@/services/productService";
 import { usePagination } from "@/composables/usePagination";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
+
 // Reactive variables
-const products = ref([]);
+const products = ref<Product[]>([]);
 const loading = ref(true);
 const searchQuery = ref(localStorage.getItem("searchQuery") || "");
 const sortOrder = ref<"asc" | "desc">("asc");
