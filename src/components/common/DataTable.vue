@@ -100,7 +100,7 @@
                 Edit
               </button>
               <button
-                @click="confirmDelete(product.id)"
+                @click.stop="confirmDelete(product.id)"
                 class="px-3 py-1 ml-2 text-sm font-semibold text-white bg-red-500 rounded hover:bg-red-600"
               >
                 Hapus
